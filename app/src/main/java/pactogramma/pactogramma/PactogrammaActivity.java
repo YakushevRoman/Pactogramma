@@ -109,6 +109,7 @@ public class PactogrammaActivity extends AppCompatActivity
                 rFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment_container, rFragment)
+                        .addToBackStack(null)
                         .commit();
             }
         } else if (id == R.id.nav_setting) {
