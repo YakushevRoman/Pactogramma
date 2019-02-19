@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,6 +73,10 @@ public class FragmentAddPatient extends Fragment {
                 rContentValues.put(DataBaseShema.Patient.Columns.PERIOD_DURATION, period_duration);
 
                 rSqLiteDatabase.insert(DataBaseShema.Patient.PATIENT, null,rContentValues);
+
+                Snackbar.make(rButtonAddNewPatient, "Данные добавлены : ", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null)
+                        .show();
             }
         });
         return view;

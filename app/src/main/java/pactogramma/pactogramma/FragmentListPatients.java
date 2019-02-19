@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,17 +41,23 @@ public class FragmentListPatients extends Fragment {
         if (rCursor.moveToFirst()){
             do{
                 String name = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
-                PatientsList patientsList = new PatientsList(name,null,null,null,null,null);
-                //String name = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
-                //String name = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
-                //String name = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
-                //String name = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
-                //String name = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
-                //String name = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
+                String what_pregnancy_edit_text = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.WHAT_PREGNANCY));
+                String which_account_birth = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH));
+                String number_medical_history = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_));
+                String data_and_time_hospitalization = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION));
+                String period_duration = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.PERIOD_DURATION));
+
+                PatientsList patientsList = new PatientsList(name,what_pregnancy_edit_text,which_account_birth,number_medical_history,data_and_time_hospitalization,period_duration);
                 rPatientsLists.add(patientsList);
             }while (rCursor.moveToNext());
         }
         rPatientAdapter = new PatientAdapter(rPatientsLists);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Nullable
@@ -82,7 +89,7 @@ public class FragmentListPatients extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull PatientHolder patientHolder, int i) {
             PatientsList patientsList = rPatientsListsRecyclerView.get(i);
-            patientHolder.rPatientsTextView.setText(patientsList.getName() + "    " + patientsList.getNumber_medical_history());
+            patientHolder.rPatientsTextView.setText(patientsList.getName() /*+ "    " + patientsList.getNumber_medical_history()*/);
         }
 
         @Override
@@ -91,7 +98,7 @@ public class FragmentListPatients extends Fragment {
         }
     }
 
-    private class PatientHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class PatientHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private TextView rPatientsTextView;
 
@@ -99,18 +106,34 @@ public class FragmentListPatients extends Fragment {
             super(itemView);
             rPatientsTextView = itemView.findViewById(R.id.patient_item_text_view);
             rPatientsTextView.setOnClickListener(this);
+            rPatientsTextView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            int id = rPatientsTextView.getId();
+            Snackbar.make(v, rPatientsTextView.getText().toString() + "  id" + id  , Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                    .show();
 
-                Toast.makeText(getContext(), rPatientsTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+        }
 
+        @Override
+        public boolean onLongClick(View v) {
+
+            rSqLiteDatabase = rDataBasePatients.getWritableDatabase();
+            int delItems = rSqLiteDatabase.delete(DataBaseShema.Patient.PATIENT, DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME + " = Valentina Durova" , null);
+
+            Snackbar.make(v, "Удалено :" + delItems , Snackbar.LENGTH_LONG)
+                    //.setAction("Action", null)
+                    .show();
+            return true;
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        rDataBasePatients.close();
     }
 }
