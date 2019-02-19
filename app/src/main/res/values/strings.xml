@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Pactogramma</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="fn_ln">Ф.И.О. :</string>
+    <string name="what_pregnancy">Какая беременность :</string>
+    <string name="which_account_birth">Какие по счёту роды:</string>
+    <string name="data_and_time_hospitalization">Даты и время госпитализации</string>
+    <string name="period_duration">Длительность безродового периода:</string>
+    <string name="number_medical_history">Номер истории болезни :</string>
+</resources>
