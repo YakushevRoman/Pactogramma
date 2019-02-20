@@ -7,13 +7,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,28 +72,40 @@ public class FragmentListPatients extends Fragment {
         rRecyclerViewPatients.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         rRecyclerViewPatients.setAdapter(rPatientAdapter);
+
+        /*GraphView graph = (GraphView) view.findViewById(R.id.graph);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 0),
+                new DataPoint(4, 0)
+        });
+        graph.addSeries(series);*/
+
         return view;
     }
 
     private class PatientAdapter extends RecyclerView.Adapter<PatientHolder>{
 
         private List <PatientsList> rPatientsListsRecyclerView;
-
+        private Bundle bundle;
         public PatientAdapter(List<PatientsList> rPatientsListsRecyclerView) {
             this.rPatientsListsRecyclerView = rPatientsListsRecyclerView;
+
         }
 
         @NonNull
         @Override
         public PatientHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.patients_item_recycler_view, viewGroup,false);
-            return new PatientHolder(view);
+
+            return new PatientHolder(view, bundle);
         }
 
         @Override
         public void onBindViewHolder(@NonNull PatientHolder patientHolder, int i) {
             PatientsList patientsList = rPatientsListsRecyclerView.get(i);
-            patientHolder.rPatientsTextView.setText(patientsList.getName() /*+ "    " + patientsList.getNumber_medical_history()*/);
+            bundle = new Bundle();
+            bundle.putString(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME,patientsList.getName().toString());
+            patientHolder.rPatientsTextView.setText(patientsList.getName());
         }
 
         @Override
@@ -101,18 +117,31 @@ public class FragmentListPatients extends Fragment {
     private class PatientHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private TextView rPatientsTextView;
+        private Bundle bundle;
 
-        public PatientHolder(@NonNull View itemView) {
+        public PatientHolder(@NonNull View itemView, Bundle bundle) {
             super(itemView);
             rPatientsTextView = itemView.findViewById(R.id.patient_item_text_view);
             rPatientsTextView.setOnClickListener(this);
             rPatientsTextView.setOnLongClickListener(this);
+            this.bundle = bundle;
         }
 
         @Override
         public void onClick(View v) {
-            int id = rPatientsTextView.getId();
-            Snackbar.make(v, rPatientsTextView.getText().toString() + "  id" + id  , Snackbar.LENGTH_LONG)
+            FragmentManager rFragmentManager = getFragmentManager();
+            Fragment rFragment = rFragmentManager.findFragmentById(R.id.fragment_container);
+            if(rFragment != null){
+                rFragment = new FragmentGraph();
+                rFragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.fragment_container,rFragment)
+                        .commit();
+            }
+
+            rFragment.setArguments(bundle);
+            Snackbar.make(v, rPatientsTextView.getText().toString() , Snackbar.LENGTH_LONG)
                     .setAction("Action", null)
                     .show();
 
@@ -121,12 +150,12 @@ public class FragmentListPatients extends Fragment {
         @Override
         public boolean onLongClick(View v) {
 
-            rSqLiteDatabase = rDataBasePatients.getWritableDatabase();
+            /*rSqLiteDatabase = rDataBasePatients.getWritableDatabase();
             int delItems = rSqLiteDatabase.delete(DataBaseShema.Patient.PATIENT, DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME + " = Valentina Durova" , null);
 
             Snackbar.make(v, "Удалено :" + delItems , Snackbar.LENGTH_LONG)
                     //.setAction("Action", null)
-                    .show();
+                    .show();*/
             return true;
         }
     }
