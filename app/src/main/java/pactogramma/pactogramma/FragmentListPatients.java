@@ -15,10 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +40,7 @@ public class FragmentListPatients extends Fragment {
         rCursor = rSqLiteDatabase.query(DataBaseShema.Patient.PATIENT, null,null,null,null,null, null);
         if (rCursor.moveToFirst()){
             do{
+                int id = rCursor.getInt(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.ID));
                 String name = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
                 String what_pregnancy_edit_text = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.WHAT_PREGNANCY));
                 String which_account_birth = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH));
@@ -51,7 +48,7 @@ public class FragmentListPatients extends Fragment {
                 String data_and_time_hospitalization = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION));
                 String period_duration = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.PERIOD_DURATION));
 
-                PatientsList patientsList = new PatientsList(name,what_pregnancy_edit_text,which_account_birth,number_medical_history,data_and_time_hospitalization,period_duration);
+                PatientsList patientsList = new PatientsList(id,name,what_pregnancy_edit_text,which_account_birth,number_medical_history,data_and_time_hospitalization,period_duration);
                 rPatientsLists.add(patientsList);
             }while (rCursor.moveToNext());
         }
@@ -87,7 +84,7 @@ public class FragmentListPatients extends Fragment {
 
         private List <PatientsList> rPatientsListsRecyclerView;
         private Bundle bundle;
-        public PatientAdapter(List<PatientsList> rPatientsListsRecyclerView) {
+        PatientAdapter(List<PatientsList> rPatientsListsRecyclerView) {
             this.rPatientsListsRecyclerView = rPatientsListsRecyclerView;
 
         }
@@ -96,15 +93,22 @@ public class FragmentListPatients extends Fragment {
         @Override
         public PatientHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.patients_item_recycler_view, viewGroup,false);
-
+            bundle = new Bundle();
             return new PatientHolder(view, bundle);
         }
 
         @Override
         public void onBindViewHolder(@NonNull PatientHolder patientHolder, int i) {
             PatientsList patientsList = rPatientsListsRecyclerView.get(i);
-            bundle = new Bundle();
-            bundle.putString(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME,patientsList.getName().toString());
+
+            bundle.putInt(DataBaseShema.Patient.Columns.ID,patientsList.getID());
+            bundle.putString(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME,patientsList.getName());
+            bundle.putString(DataBaseShema.Patient.Columns.WHAT_PREGNANCY,patientsList.getWhat_pregnancy());
+            bundle.putString(DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH,patientsList.getWhich_account_birth());
+            bundle.putString(DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_,patientsList.getNumber_medical_history());
+            bundle.putString(DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION,patientsList.getData_and_time_hospitalization());
+            bundle.putString(DataBaseShema.Patient.Columns.PERIOD_DURATION,patientsList.getPeriod_duration());
+
             patientHolder.rPatientsTextView.setText(patientsList.getName());
         }
 
@@ -119,7 +123,7 @@ public class FragmentListPatients extends Fragment {
         private TextView rPatientsTextView;
         private Bundle bundle;
 
-        public PatientHolder(@NonNull View itemView, Bundle bundle) {
+        PatientHolder(@NonNull View itemView, Bundle bundle) {
             super(itemView);
             rPatientsTextView = itemView.findViewById(R.id.patient_item_text_view);
             rPatientsTextView.setOnClickListener(this);
@@ -141,6 +145,7 @@ public class FragmentListPatients extends Fragment {
             }
 
             rFragment.setArguments(bundle);
+
             Snackbar.make(v, rPatientsTextView.getText().toString() , Snackbar.LENGTH_LONG)
                     .setAction("Action", null)
                     .show();

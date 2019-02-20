@@ -1,6 +1,8 @@
 package pactogramma.pactogramma;
 
 public class PatientsList {
+
+    private int ID;
     private String name;
     private String what_pregnancy;
     private String which_account_birth;
@@ -8,7 +10,17 @@ public class PatientsList {
     private String data_and_time_hospitalization;
     private String period_duration;
 
-    public PatientsList(String name, String what_pregnancy, String which_account_birth, String number_medical_history, String data_and_time_hospitalization, String period_duration) {
+    PatientsList(String name, String what_pregnancy, String which_account_birth, String number_medical_history, String data_and_time_hospitalization, String period_duration) {
+        this.name = name;
+        this.what_pregnancy = what_pregnancy;
+        this.which_account_birth = which_account_birth;
+        this.number_medical_history = number_medical_history;
+        this.data_and_time_hospitalization = data_and_time_hospitalization;
+        this.period_duration = period_duration;
+    }
+
+    PatientsList(int ID, String name, String what_pregnancy, String which_account_birth, String number_medical_history, String data_and_time_hospitalization, String period_duration) {
+        this.ID = ID;
         this.name = name;
         this.what_pregnancy = what_pregnancy;
         this.which_account_birth = which_account_birth;
@@ -63,5 +75,13 @@ public class PatientsList {
 
     public void setPeriod_duration(String period_duration) {
         this.period_duration = period_duration;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }
