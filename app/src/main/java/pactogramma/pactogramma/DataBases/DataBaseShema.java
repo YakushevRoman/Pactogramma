@@ -16,9 +16,12 @@ public class DataBaseShema {
     }
     //•	Сердцебиение плода
     public static final class BabyHeartbeat{
-        public static final String ID = "id";
-        public static final String HEARTBEAT = "heartbeat";
-
+        public static final String PULSES = "babypulses";
+        public static final class Columns {
+            public static final String ID = "id";
+            public static final String HEARTBEAT = "heartbeat";
+            public static final String TIME = "time";
+        }
     }
     //•	Околоплодные воды и конфигурация головки
     public static final class WhatPregnancy{

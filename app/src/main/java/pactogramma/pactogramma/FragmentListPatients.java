@@ -135,15 +135,15 @@ public class FragmentListPatients extends Fragment {
         public void onClick(View v) {
             FragmentManager rFragmentManager = getFragmentManager();
             Fragment rFragment = rFragmentManager.findFragmentById(R.id.fragment_container);
-            if(rFragment != null){
+
+            if(rFragment != null) {
                 rFragment = new FragmentGraph();
                 rFragmentManager
                         .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.fragment_container,rFragment)
+                        //.addToBackStack(null)
+                        .replace(R.id.fragment_container, rFragment)
                         .commit();
             }
-
             rFragment.setArguments(bundle);
 
             Snackbar.make(v, rPatientsTextView.getText().toString() , Snackbar.LENGTH_LONG)
@@ -166,8 +166,13 @@ public class FragmentListPatients extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        rDataBasePatients.close();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        rDataBasePatients.close();
     }
 }

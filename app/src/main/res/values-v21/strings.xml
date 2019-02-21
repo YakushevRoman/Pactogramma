@@ -2,4 +2,5 @@
 <resources>
     <string name="what_pregnancy">Какая беременность :</string>
     <string name="how_baby_1">Какие по счёту роды:</string>
+    <string name="add_pulses">Введите пуль плода</string>
 </resources>
