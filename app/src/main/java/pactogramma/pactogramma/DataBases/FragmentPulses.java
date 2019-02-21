@@ -20,7 +20,7 @@ import pactogramma.pactogramma.R;
 
 public class FragmentPulses extends Fragment {
 
-    private EditText rEditTextPulses;
+    private EditText rEditTextPulses, rEditTextTimePulse;
     private Button rButtonPulses;
     private DataBasePatients rDataBasePatients;
     private SQLiteDatabase rSqLiteDatabase;
@@ -40,6 +40,7 @@ public class FragmentPulses extends Fragment {
         Log.d(TAG, "onCreateView: 2");
         View view = inflater.inflate(R.layout.fragment_pulses, container, false);
         rEditTextPulses = view.findViewById(R.id.pulses_edit_text);
+        rEditTextTimePulse = view.findViewById(R.id.time_pulses_edit_text);
         rButtonPulses = view.findViewById(R.id.add_pusles_button);
         rButtonPulses.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,13 +55,14 @@ public class FragmentPulses extends Fragment {
                 rDataBasePatients = new DataBasePatients(getContext());
                 rSqLiteDatabase = rDataBasePatients.getWritableDatabase();
                 ContentValues rContentValues = new ContentValues();
-                int x = Integer.valueOf(rEditTextPulses.getText().toString());
+                int pulse = Integer.valueOf(rEditTextPulses.getText().toString());
+                int time = Integer.valueOf(rEditTextTimePulse.getText().toString());
 
-                rContentValues.put(DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT, x);
-                rContentValues.put(DataBaseShema.BabyHeartbeat.Columns.TIME, x);
+                rContentValues.put(DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT, pulse);
+                rContentValues.put(DataBaseShema.BabyHeartbeat.Columns.TIME, time);
 
                 rSqLiteDatabase.insert(DataBaseShema.BabyHeartbeat.PULSES, null,rContentValues);
-                Log.d(TAG, "onClick: 2"  + " " + x);
+                Log.d(TAG, "onClick: 2"  + " " + pulse);
 
                 Snackbar.make(v, "Пульс :" +rEditTextPulses.getText().toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null)

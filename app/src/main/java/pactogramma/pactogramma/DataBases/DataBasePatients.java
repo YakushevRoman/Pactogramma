@@ -9,7 +9,7 @@ import android.util.Log;
 public class DataBasePatients extends SQLiteOpenHelper {
 
     private static final String DATA_BASE_NAME = "patients.db";
-    private static final int VERSION = 12;
+    private static final int VERSION = 17;
     public static final String TAG = "fragmentGraph";
 
     //private String sqlTablePulses = "CREATE TABLE " + DataBaseShema.BabyHeartbeat.PULSES;

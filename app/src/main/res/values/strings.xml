@@ -12,5 +12,6 @@
     <string name="data_and_time_hospitalization">Даты и время госпитализации</string>
     <string name="period_duration">Длительность безродового периода:</string>
     <string name="number_medical_history">Номер истории болезни :</string>
-    <string name="add_pulses">Введите пуль плода</string>
+    <string name="add_pulses">Введите пульc плода</string>
+    <string name="time_read_pulse">Время записи</string>
 </resources>

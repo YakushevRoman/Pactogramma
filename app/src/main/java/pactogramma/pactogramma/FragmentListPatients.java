@@ -53,7 +53,6 @@ public class FragmentListPatients extends Fragment {
             }while (rCursor.moveToNext());
         }
         rPatientAdapter = new PatientAdapter(rPatientsLists);
-
     }
 
     @Override
@@ -140,7 +139,7 @@ public class FragmentListPatients extends Fragment {
                 rFragment = new FragmentGraph();
                 rFragmentManager
                         .beginTransaction()
-                        //.addToBackStack(null)
+                        .addToBackStack(null)
                         .replace(R.id.fragment_container, rFragment)
                         .commit();
             }

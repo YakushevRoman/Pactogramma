@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -32,6 +33,7 @@ public class FragmentGraph extends Fragment {
     private TextView rTextView;
     private GraphView rGraphView;
     private Button rButton;
+    //private ScrollView rScrollView;
     private String name
             ,what_pregnancy_edit_text
             ,which_account_birth
@@ -57,7 +59,6 @@ public class FragmentGraph extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-                rDataPointsArrayList = new ArrayList<>();
                 bundle = getArguments();
                 id = bundle.getInt(DataBaseShema.Patient.Columns.ID, 0);
 
@@ -90,18 +91,6 @@ public class FragmentGraph extends Fragment {
 
                 Log.d(TAG, "onCreate: null");
 
-                rDataBasePatients = new DataBasePatients(getContext());
-                rSqLiteDatabase = rDataBasePatients.getReadableDatabase();
-                Cursor cursor = rSqLiteDatabase.query(DataBaseShema.BabyHeartbeat.PULSES, null, null, null,null, null, null);
-                if (cursor.moveToFirst()){
-                    do{
-                        int x = cursor.getInt(cursor.getColumnIndex(DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT));
-                        int y = cursor.getInt(cursor.getColumnIndex(DataBaseShema.BabyHeartbeat.Columns.TIME));
-                        rDataPoint = new DataPoint(x, y);
-                        rDataPointsArrayList.add(rDataPoint);
-                        Log.d(TAG, "onCreate: " + x + " " + y);
-                    }while (cursor.moveToNext());
-                }
         //Log.d(TAG, "onCreate: " + rDataPointsArrayList.toString());
             }
 
@@ -119,6 +108,8 @@ public class FragmentGraph extends Fragment {
                 .inflate(R.layout.fragment_graph, container, false);
         rTextView = view
                 .findViewById(R.id.title_for_grapg);
+
+
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(pulse+ " ID = " + id
@@ -153,6 +144,20 @@ public class FragmentGraph extends Fragment {
             }
         });
 
+        rDataPointsArrayList = new ArrayList<>();
+        rDataBasePatients = new DataBasePatients(getContext());
+        rSqLiteDatabase = rDataBasePatients.getReadableDatabase();
+        Cursor cursor = rSqLiteDatabase.query(DataBaseShema.BabyHeartbeat.PULSES, null, null, null,null, null, null);
+        if (cursor.moveToFirst()){
+            do{
+                int pulse = cursor.getInt(cursor.getColumnIndex(DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT));
+                int time = cursor.getInt(cursor.getColumnIndex(DataBaseShema.BabyHeartbeat.Columns.TIME));
+                rDataPoint = new DataPoint(time, pulse);
+                rDataPointsArrayList.add(rDataPoint);
+                Log.d(TAG, "onCreate: " + time + " " + pulse);
+            }while (cursor.moveToNext());
+        }
+
         rGraphView = view.findViewById(R.id.graph_css_ploda);
         // set manual X bounds
         rGraphView.getViewport()
@@ -174,7 +179,6 @@ public class FragmentGraph extends Fragment {
         DataPoint[] arr = rDataPointsArrayList.toArray(new DataPoint[rDataPointsArrayList.size()]);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(arr);
         rGraphView.addSeries(series);
-
         return view;
     }
 
@@ -185,7 +189,6 @@ public class FragmentGraph extends Fragment {
         SharedPreferences.Editor ed = sharedPreferences.edit();
         ed.putString("name", name);
         ed.commit();*/
-
         Log.d(TAG, "onStop: " + name);
     }
 
