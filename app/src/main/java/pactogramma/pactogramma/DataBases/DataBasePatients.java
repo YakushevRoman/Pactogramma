@@ -54,16 +54,13 @@ public class DataBasePatients extends SQLiteOpenHelper {
             + DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION + " TEXT,"
             + DataBaseShema.Patient.Columns.PERIOD_DURATION + " TEXT);";
 
-    /*private String sqlPulse = "CREATE TABLE " + DataBaseShema.BabyHeartbeat.PULSES + "("
-            + DataBaseShema.BabyHeartbeat.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + " REAL,"
-            + DataBaseShema.BabyHeartbeat.Columns.TIME + " REAL);";*/
 
 
     private String sqlPulse = "CREATE TABLE " + DataBaseShema.BabyHeartbeat.PULSES + "("
             + DataBaseShema.BabyHeartbeat.Columns.ID + " INTEGER,"
             + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + " REAL,"
             + DataBaseShema.BabyHeartbeat.Columns.TIME + " REAL);";
+
     private static final String sqlPulsedata = "INSERT INTO " + DataBaseShema.BabyHeartbeat.PULSES + "("
             + DataBaseShema.BabyHeartbeat.Columns.ID + ", "
             + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + ", "

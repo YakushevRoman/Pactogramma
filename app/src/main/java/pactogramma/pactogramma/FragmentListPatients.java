@@ -37,30 +37,45 @@ public class FragmentListPatients extends Fragment {
         rPatientsLists = new ArrayList<>();
         rDataBasePatients = new DataBasePatients(getContext());
         rSqLiteDatabase = rDataBasePatients.getReadableDatabase();
-        rCursor = rSqLiteDatabase.query(DataBaseShema.Patient.PATIENT, null,null,null,null,null, null);
+        rCursor = rSqLiteDatabase.
+                query(DataBaseShema.Patient.PATIENT,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         if (rCursor.moveToFirst()){
             do{
-                int id = rCursor
-                        .getInt(rCursor
-                                .getColumnIndex(DataBaseShema.Patient.Columns.ID));
-                String name = rCursor
-                        .getString(rCursor
-                                .getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
-                String what_pregnancy_edit_text = rCursor
-                        .getString(rCursor
-                                .getColumnIndex(DataBaseShema.Patient.Columns.WHAT_PREGNANCY));
-                String which_account_birth = rCursor
-                        .getString(rCursor
-                                .getColumnIndex(DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH));
-                String number_medical_history = rCursor
-                        .getString(rCursor
-                                .getColumnIndex(DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_));
-                String data_and_time_hospitalization = rCursor
-                        .getString(rCursor
-                                .getColumnIndex(DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION));
-                String period_duration = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.PERIOD_DURATION));
+                int id = rCursor.
+                        getInt(rCursor.
+                                getColumnIndex(DataBaseShema.Patient.Columns.ID));
+                String name = rCursor.
+                        getString(rCursor.
+                                getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
+                String what_pregnancy_edit_text = rCursor.
+                        getString(rCursor.
+                                getColumnIndex(DataBaseShema.Patient.Columns.WHAT_PREGNANCY));
+                String which_account_birth = rCursor.
+                        getString(rCursor.
+                                getColumnIndex(DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH));
+                String number_medical_history = rCursor.
+                        getString(rCursor.
+                                getColumnIndex(DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_));
+                String data_and_time_hospitalization = rCursor.
+                        getString(rCursor.
+                                getColumnIndex(DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION));
+                String period_duration = rCursor.
+                        getString(rCursor.
+                                getColumnIndex(DataBaseShema.Patient.Columns.PERIOD_DURATION));
 
-                PatientsList patientsList = new PatientsList(id,name,what_pregnancy_edit_text,which_account_birth,number_medical_history,data_and_time_hospitalization,period_duration);
+                PatientsList patientsList = new PatientsList(id,
+                        name,
+                        what_pregnancy_edit_text,
+                        which_account_birth,
+                        number_medical_history,
+                        data_and_time_hospitalization,
+                        period_duration);
                 rPatientsLists.add(patientsList);
             }while (rCursor.moveToNext());
         }
@@ -75,11 +90,17 @@ public class FragmentListPatients extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_patients, container, false);
-        rRecyclerViewPatients = view.findViewById(R.id.list_patients_recycler_view);
-        rRecyclerViewPatients.setLayoutManager(new LinearLayoutManager(getActivity()));
+        View view = inflater.
+                inflate(R.layout.fragment_patients,
+                        container,
+                        false);
+        rRecyclerViewPatients = view.
+                findViewById(R.id.list_patients_recycler_view);
+        rRecyclerViewPatients.
+                setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        rRecyclerViewPatients.setAdapter(rPatientAdapter);
+        rRecyclerViewPatients.
+                setAdapter(rPatientAdapter);
 
         /*GraphView graph = (GraphView) view.findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
