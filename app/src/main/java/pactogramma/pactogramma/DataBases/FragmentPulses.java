@@ -24,6 +24,8 @@ public class FragmentPulses extends Fragment {
     private Button rButtonPulses;
     private DataBasePatients rDataBasePatients;
     private SQLiteDatabase rSqLiteDatabase;
+    private Bundle bundle;
+    int id;
 
     public static final String TAG = "fragmentGraph";
 
@@ -31,7 +33,10 @@ public class FragmentPulses extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, "onCreate: 2");
+        bundle = getArguments();
+        id = bundle.getInt(DataBaseShema.Patient.Columns.ID, 0);
+
+        Log.d(TAG, "onCreate: 2 " + String.valueOf(id));
     }
 
     @Nullable
@@ -46,25 +51,21 @@ public class FragmentPulses extends Fragment {
             @Override
             public void onClick(View v) {
 
-                /*Bundle bundle = new Bundle();
-                bundle.putInt("pulses", Integer.valueOf(pulses));
-                bundle.putInt("time",5);*/
-
-                //rEditTextPulses.setText("");
-                //
                 rDataBasePatients = new DataBasePatients(getContext());
                 rSqLiteDatabase = rDataBasePatients.getWritableDatabase();
                 ContentValues rContentValues = new ContentValues();
                 int pulse = Integer.valueOf(rEditTextPulses.getText().toString());
                 int time = Integer.valueOf(rEditTextTimePulse.getText().toString());
 
+
+                rContentValues.put(DataBaseShema.BabyHeartbeat.Columns.ID, id);
                 rContentValues.put(DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT, pulse);
                 rContentValues.put(DataBaseShema.BabyHeartbeat.Columns.TIME, time);
 
                 rSqLiteDatabase.insert(DataBaseShema.BabyHeartbeat.PULSES, null,rContentValues);
-                Log.d(TAG, "onClick: 2"  + " " + pulse);
+                Log.d(TAG, "onClick: добавлены данные "  + "id = " + 1  + " pulse "  + pulse + " time " + time);
 
-                Snackbar.make(v, "Пульс :" +rEditTextPulses.getText().toString(), Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "id = " + 1 + "Пульс :" +rEditTextPulses.getText().toString() + "\n Время : " + rEditTextTimePulse.getText().toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null)
                         .show();
                 getActivity().getSupportFragmentManager().popBackStack();
@@ -79,7 +80,7 @@ public class FragmentPulses extends Fragment {
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: 2");
-        //rDataBasePatients.close();
+        rDataBasePatients.close();
     }
 
     @Override

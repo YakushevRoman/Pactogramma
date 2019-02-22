@@ -55,10 +55,12 @@ public class FragmentGraph extends Fragment {
 
     private DataBasePatients rDataBasePatients;
     private SQLiteDatabase rSqLiteDatabase;
+    private Cursor cursor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
                 bundle = getArguments();
                 id = bundle.getInt(DataBaseShema.Patient.Columns.ID, 0);
 
@@ -89,7 +91,7 @@ public class FragmentGraph extends Fragment {
                                 .PERIOD_DURATION, "");
 
 
-                Log.d(TAG, "onCreate: null");
+                Log.d(TAG, "onCreate: null  id " + id);
 
         //Log.d(TAG, "onCreate: " + rDataPointsArrayList.toString());
             }
@@ -127,6 +129,9 @@ public class FragmentGraph extends Fragment {
             @Override
             public void onClick(View v) {
 
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", id);
+
                 FragmentManager rFragmentManager = getFragmentManager();
                 Fragment rFragment = rFragmentManager.findFragmentById(R.id.fragment_container);
                 if(rFragment != null){
@@ -136,6 +141,8 @@ public class FragmentGraph extends Fragment {
                             .addToBackStack(null)
                             .replace(R.id.fragment_container,rFragment)
                             .commit();
+                    rFragment.setArguments(bundle);
+
                 }
 
                 Snackbar.make(v, "реализовать добавление данных" , Snackbar.LENGTH_LONG)
@@ -145,9 +152,10 @@ public class FragmentGraph extends Fragment {
         });
 
         rDataPointsArrayList = new ArrayList<>();
+
         rDataBasePatients = new DataBasePatients(getContext());
         rSqLiteDatabase = rDataBasePatients.getReadableDatabase();
-        Cursor cursor = rSqLiteDatabase.query(DataBaseShema.BabyHeartbeat.PULSES, null, null, null,null, null, null);
+        cursor = rSqLiteDatabase.query(DataBaseShema.BabyHeartbeat.PULSES, null, "id = ?", new String[]{String.valueOf(id)},null, null, null);
         if (cursor.moveToFirst()){
             do{
                 int pulse = cursor.getInt(cursor.getColumnIndex(DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT));
@@ -171,7 +179,7 @@ public class FragmentGraph extends Fragment {
         rGraphView.getViewport()
                 .setYAxisBoundsManual(true);
         rGraphView.getViewport()
-                .setMinY(100);
+                .setMinY(0);
         rGraphView.getViewport()
                 .setMaxY(180);
 
@@ -189,6 +197,8 @@ public class FragmentGraph extends Fragment {
         SharedPreferences.Editor ed = sharedPreferences.edit();
         ed.putString("name", name);
         ed.commit();*/
+        rDataBasePatients.close();
+        cursor.close();
         Log.d(TAG, "onStop: " + name);
     }
 

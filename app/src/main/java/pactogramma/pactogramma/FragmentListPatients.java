@@ -40,12 +40,24 @@ public class FragmentListPatients extends Fragment {
         rCursor = rSqLiteDatabase.query(DataBaseShema.Patient.PATIENT, null,null,null,null,null, null);
         if (rCursor.moveToFirst()){
             do{
-                int id = rCursor.getInt(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.ID));
-                String name = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
-                String what_pregnancy_edit_text = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.WHAT_PREGNANCY));
-                String which_account_birth = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH));
-                String number_medical_history = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_));
-                String data_and_time_hospitalization = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION));
+                int id = rCursor
+                        .getInt(rCursor
+                                .getColumnIndex(DataBaseShema.Patient.Columns.ID));
+                String name = rCursor
+                        .getString(rCursor
+                                .getColumnIndex(DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME));
+                String what_pregnancy_edit_text = rCursor
+                        .getString(rCursor
+                                .getColumnIndex(DataBaseShema.Patient.Columns.WHAT_PREGNANCY));
+                String which_account_birth = rCursor
+                        .getString(rCursor
+                                .getColumnIndex(DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH));
+                String number_medical_history = rCursor
+                        .getString(rCursor
+                                .getColumnIndex(DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_));
+                String data_and_time_hospitalization = rCursor
+                        .getString(rCursor
+                                .getColumnIndex(DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION));
                 String period_duration = rCursor.getString(rCursor.getColumnIndex(DataBaseShema.Patient.Columns.PERIOD_DURATION));
 
                 PatientsList patientsList = new PatientsList(id,name,what_pregnancy_edit_text,which_account_birth,number_medical_history,data_and_time_hospitalization,period_duration);

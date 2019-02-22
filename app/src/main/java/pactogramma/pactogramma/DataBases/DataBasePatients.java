@@ -9,7 +9,7 @@ import android.util.Log;
 public class DataBasePatients extends SQLiteOpenHelper {
 
     private static final String DATA_BASE_NAME = "patients.db";
-    private static final int VERSION = 17;
+    private static final int VERSION = 22;
     public static final String TAG = "fragmentGraph";
 
     //private String sqlTablePulses = "CREATE TABLE " + DataBaseShema.BabyHeartbeat.PULSES;
@@ -61,17 +61,19 @@ public class DataBasePatients extends SQLiteOpenHelper {
 
 
     private String sqlPulse = "CREATE TABLE " + DataBaseShema.BabyHeartbeat.PULSES + "("
-            + DataBaseShema.BabyHeartbeat.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + DataBaseShema.BabyHeartbeat.Columns.ID + " INTEGER,"
             + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + " REAL,"
             + DataBaseShema.BabyHeartbeat.Columns.TIME + " REAL);";
     private static final String sqlPulsedata = "INSERT INTO " + DataBaseShema.BabyHeartbeat.PULSES + "("
+            + DataBaseShema.BabyHeartbeat.Columns.ID + ", "
             + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + ", "
             + DataBaseShema.BabyHeartbeat.Columns.TIME
-            + ") VALUES (5, 110) ";
+            + ") VALUES (1, 110, 1) ";
     private static final String sqlPulsedata1 = "INSERT INTO " + DataBaseShema.BabyHeartbeat.PULSES + "("
+            + DataBaseShema.BabyHeartbeat.Columns.ID + ", "
             + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + ", "
             + DataBaseShema.BabyHeartbeat.Columns.TIME
-            + ") VALUES (15, 170) ";
+            + ") VALUES (1,170, 5) ";
 
     public DataBasePatients(@Nullable Context context) {
         super(context, DATA_BASE_NAME, null, VERSION);
