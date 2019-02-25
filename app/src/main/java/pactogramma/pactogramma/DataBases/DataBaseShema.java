@@ -23,31 +23,54 @@ public class DataBaseShema {
             public static final String TIME = "time";
         }
     }
-    //•	Околоплодные воды и конфигурация головки
-    public static final class WhatPregnancy{
 
-    }
-    // •	Шейка матки и прохождение головки
-    // •	Маточные сокращения
     // •	Окситоцин
     public static final class Oxytocin{
-
+        public static final String OXYTOCIN = "pulse";
+        public static final class Columns{
+            public static final String ID = "id";
+            public static final String oxytocin = "oxytocin";
+        }
     }
     //•	Полученные лекарства
     public static final class MedicationsReceived{
 
     }
-    // •	Пульс и давление
-    public static final class PulseAndPressure
-    {
-
+    // •	Пульс
+    public static final class Pulse {
+        public static final String PULSE = "pulse";
+        public static final class Columns{
+            public static final String ID = "id";
+            public static final String PULSE = "pulse";
+        }
+    }
+    // •Давление
+    public static final class Pressure {
+        public static final String PRESSURE = "pulse";
+        public static final class Columns{
+            public static final String ID = "id";
+            public static final String PRESSURE = "pressure";
+        }
     }
     // •	Температура
-    public static final class DataAndTimeHospitalization{
+    public static final class Temperature{
+        public static final String TEMPERATURE = "temperature";
+        public static final class Columns {
+            public static final String ID = "id";
+            public static final String TEMP = "temp";
+        }
+
 
     }
     // •	Моча
     public static final class Urine{
+        public static final String URINE = "urine";
+        public static final class Columns{
+            public static final String ID = "id";
+            public static final String PROTEIN = "protein";
+            public static final String ACETONE  = "acetone";
+            public static final String VOLUME = "volume";
+        }
 
     }
 }

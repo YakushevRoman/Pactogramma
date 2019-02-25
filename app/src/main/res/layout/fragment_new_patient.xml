@@ -2,10 +2,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_margin="@dimen/fab_margin"
+    android:background="@drawable/side_nav_bar"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <TextView
         android:text="@string/fn_ln"
         android:layout_width="wrap_content"
@@ -72,5 +77,5 @@
         android:text="Добавить "
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+    </LinearLayout>
 </LinearLayout>
