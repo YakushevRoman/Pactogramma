@@ -1,8 +1,10 @@
 package pactogramma.pactogramma;
 
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -10,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +32,24 @@ public class FragmentListPatients extends Fragment {
     private DataBasePatients rDataBasePatients;
     private SQLiteDatabase rSqLiteDatabase;
     private Cursor rCursor;
-
+    public static final String TAG = "phone";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*ArrayList<String> contacts = new ArrayList<String>();
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        if(cursor!=null){
+            while (cursor.moveToNext()) {
+
+                // получаем каждый контакт
+                String contact = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY));
+                // добавляем контакт в список
+                contacts.add(contact);
+            }
+            cursor.close();
+        }
+        Log.d(TAG, "hasWhatsapp: " + contacts);*/
 
         rPatientsLists = new ArrayList<>();
         rDataBasePatients = new DataBasePatients(getContext());
