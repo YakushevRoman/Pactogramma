@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -37,14 +38,21 @@ public class FragmentContact extends Fragment {
     private static boolean READ_CONTACTS_GRANTED = false;
     private Object object;
     ListView contactList;
+    private List <String> listContacts;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        object = new Object();
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
         contactList = view.findViewById(R.id.contactList);
+
+        listContacts = new ArrayList<>();
+        listContacts.add("+380631348299");
+        listContacts.add("+380672566867");
+        listContacts.add("+380502741401");
+        listContacts.add("+380952011179");
+        listContacts.add("+380954666068");
+        listContacts.add("+380676072221");
         // получаем разрешения
         int hasReadContactPermission = ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_CONTACTS);
         // если устройство до API 23, устанавливаем разрешение
@@ -54,7 +62,6 @@ public class FragmentContact extends Fragment {
             // вызываем диалоговое окно для установки разрешений
             ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CODE_READ_CONTACTS);
         }
-
         // получаем разрешения
         int hasReadContactPermission1 = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CONTACTS);
         // если устройство до API 23, устанавливаем разрешение
@@ -64,13 +71,15 @@ public class FragmentContact extends Fragment {
             // вызываем диалоговое окно для установки разрешений
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_CONTACTS}, REQUEST_CODE_READ_CONTACTS);
         }
-
         // если разрешение установлено, загружаем контакты
         if (READ_CONTACTS_GRANTED) {
+
             Thread t1 = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    writeContact();
+                    for (String number: listContacts) {
+                        writeContact(number);
+                    }
                     Log.d(TAG, "run: 1 thread" + " Данные добавлены" );
                 }
             });
@@ -123,33 +132,34 @@ public class FragmentContact extends Fragment {
         startActivity(sendIntent);
     }
 
-    private synchronized void   writeContact() {
+    private synchronized void   writeContact(String phoneNumber) {
         // для добавления контакта в базу телефона
-        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
-        int rawContactInsertIndex = ops.size();
+        if (!phoneNumber.equals("")) {
+            ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+            int rawContactInsertIndex = ops.size();
 
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-                .build());
-        ops.add(ContentProviderOperation
-                .newInsert(Data.CONTENT_URI)
-                .withValueBackReference(Data.RAW_CONTACT_ID,rawContactInsertIndex)
-                .withValue(Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "WWWElectro4") // Name of the person
-                .build());
-        ops.add(ContentProviderOperation
-                .newInsert(Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID,   rawContactInsertIndex)
-                .withValue(Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "+380631348299") // Number of the person
-                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                .build()); // Type of mobile number
-        try {
-            ContentProviderResult[] res = Objects.requireNonNull(getActivity()).getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-        }
-        catch (RemoteException | OperationApplicationException e) {
-            // error
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                    .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                    .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                    .build());
+            ops.add(ContentProviderOperation
+                    .newInsert(Data.CONTENT_URI)
+                    .withValueBackReference(Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                    .withValue(Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, phoneNumber) // Name of the person
+                    .build());
+            ops.add(ContentProviderOperation
+                    .newInsert(Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                    .withValue(Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber) // Number of the person
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    .build()); // Type of mobile number
+            try {
+                ContentProviderResult[] res = Objects.requireNonNull(getActivity()).getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+            } catch (RemoteException | OperationApplicationException e) {
+                // error
+            }
         }
     }
 
@@ -163,7 +173,7 @@ public class FragmentContact extends Fragment {
                 "vnd.android.cursor.item/vnd.com.whatsapp.profile",
                 "com.whatsapp"
         };
-        ContentResolver cr = Objects.requireNonNull(getActivity()).getContentResolver();
+        ContentResolver cr = getActivity().getContentResolver();
         Cursor c = cr.query(
                 Data.CONTENT_URI,
                 projection,
@@ -187,7 +197,6 @@ public class FragmentContact extends Fragment {
 
             }*/
             Log.d("WhatsApp",  number);
-            //mCursor.close();
         }
         Log.v("WhatsApp", "Total WhatsApp Contacts: " + c.getCount());
         c.close();
