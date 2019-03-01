@@ -7,11 +7,13 @@ import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Data;
@@ -25,6 +27,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,12 +43,16 @@ import java.util.concurrent.TimeUnit;
 import pactogramma.pactogramma.R;
 
 public class FragmentContact extends Fragment {
+    public static final String OUTPUT_FILE_WHATSAPP = "outputfile.txt";
+    public static final String OUTPUT_WHATSAPP = "whatsapp.txt";
     public static final String TAG = "WhatsApp";
     private static final int REQUEST_CODE_READ_CONTACTS = 1;
+    private static final int REQUEST_PERMISSION_WRITE = 1001;
     private static boolean READ_CONTACTS_GRANTED = false;
     private Object object;
     ListView contactList;
     private List <String> listContacts;
+    private boolean permissionGranted = false;
 
     @Nullable
     @Override
@@ -47,6 +61,7 @@ public class FragmentContact extends Fragment {
         contactList = view.findViewById(R.id.contactList);
 
         listContacts = new ArrayList<>();
+        /*формирования литси из файла*/
         listContacts.add("+380631348299");
         listContacts.add("+380672566867");
         listContacts.add("+380502741401");
@@ -99,7 +114,11 @@ public class FragmentContact extends Fragment {
             Thread t3 = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    whatsappload();
+                    try {
+                        whatsappload();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     Log.d(TAG, "run: 3 thread" + " воцап" );
                 }
             });
@@ -117,13 +136,12 @@ public class FragmentContact extends Fragment {
                 e.printStackTrace();
             }
 
-
             t2.start();
         }
         return view;
     }
 
-    private synchronized void whatsappload(){
+    private synchronized void whatsappload() throws InterruptedException {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
@@ -164,6 +182,8 @@ public class FragmentContact extends Fragment {
     }
 
     private synchronized void loadContacts() throws OperationApplicationException, RemoteException {
+        FileOutputStream fileOutputStream = null;
+        FileOutputStream fos = null;
         final String[] projection = {
                 Data.DATA3
         };
@@ -180,29 +200,95 @@ public class FragmentContact extends Fragment {
                 selection,
                 selectionArgs,
                 null);
-        while (c.moveToNext()) {
-            String number = c.getString(0);
-            /*String id = c.getString(c.getColumnIndex(Data.CONTACT_ID));
-            String number = c.getString(c.getColumnIndex(Data.DATA3));
-            String name = "";
-            //для нахождения имен контактов
-            Cursor mCursor = getActivity().getContentResolver().query(
-                    ContactsContract.Contacts.CONTENT_URI,
-                    new String[]{ContactsContract.Contacts.DISPLAY_NAME},
-                    ContactsContract.Contacts._ID + " =?",
-                    new String[]{id},
-                    null);
-            while (mCursor.moveToNext()) {
-                name = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
-            }*/
-            Log.d("WhatsApp",  number);
+        try {
+            //
+            fileOutputStream = getActivity().openFileOutput(OUTPUT_FILE_WHATSAPP, Context.MODE_PRIVATE);
+            //
+            if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+                Log.d(TAG, "loadContacts: " + "Хранилище недоступно");
+            }
+            fos = new FileOutputStream(getExternalPaht());
+            while (c.moveToNext()) {
+                String dataWhatsapp = c.getString(0);
+                String number = dataWhatsapp.substring(9) + "\n";
+                /*реализуем запись в файл*/
+                fileOutputStream.write(number.getBytes());
+                // для записи на внешнее хранилище
+                savePhone(number, fos);
+                Log.d("WhatsApp",  number);
+            }
+            Log.d("WhatsApp",  "Данные сохранены" + fileOutputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        finally {
+            try {
+                if (fileOutputStream != null){
+                    fileOutputStream.close();
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         Log.v("WhatsApp", "Total WhatsApp Contacts: " + c.getCount());
         c.close();
 
         }
 
+        private File getExternalPaht(){
+            return (new File(Environment.getExternalStorageDirectory(),OUTPUT_WHATSAPP));
+        }
+        // save file
+        private void savePhone (String number, FileOutputStream fileOutputStream){
+            if (permissionGranted != false){
+                checkPermissions();
+                return;
+            }
+            try {
+                fileOutputStream.write(number.getBytes());
+                Log.d(TAG, "savePhone: данные сохранены" + number);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    private boolean checkPermissions() {
+        if (!isExternalStorageWriteble()){
+            Log.d(TAG, "checkPermissions: " + " хранилище недоступно");
+            return false;
+        }
+        Log.d(TAG, "checkPermissions: " + " хранилище доступно");
+        int permissionCheck = ContextCompat.checkSelfPermission(getContext(),Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_WRITE);
+            return false;
+        }
+        return true;
+    }
+
+    // проверка доступно ли оно для чтения и записи
+        public boolean isExternalStorageWriteble(){
+            String state = Environment.getExternalStorageState();
+            return Environment.MEDIA_MOUNTED.equals(state);
+        }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case REQUEST_PERMISSION_WRITE:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    permissionGranted = true;
+                    Log.d(TAG, "onRequestPermissionsResult: " + " Разрешение получено");
+                }else {
+                    Log.d(TAG, "onRequestPermissionsResult: " + " Разрешение не получено");
+                }
+                break;
+        }
+    }
 }
 
 
