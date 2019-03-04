@@ -3,4 +3,6 @@
     <string name="what_pregnancy">Какая беременность :</string>
     <string name="how_baby_1">Какие по счёту роды:</string>
     <string name="add_pulses">Введите пуль плода</string>
+    <string name="load_file">Загрузить данные из файла</string>
+    <string name="delete_contact">Удалить контакт</string>
 </resources>

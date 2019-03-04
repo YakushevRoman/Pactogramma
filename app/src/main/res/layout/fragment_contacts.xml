@@ -5,16 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <Button
+        android:id="@+id/load_file_button"
+        android:layout_margin="@dimen/fab_margin"
+        android:text="@string/load_file"
+        android:textSize="@dimen/text_size"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Контакты">
-    </TextView>
+        android:layout_height="wrap_content" />
 
-    <ListView
-        android:id="@+id/contactList"
+    <Button
+        android:id="@+id/check_file_button"
+        android:layout_margin="@dimen/fab_margin"
+        android:text="@string/analiz"
+        android:textSize="@dimen/text_size"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/delete_contact"
+        android:layout_margin="@dimen/fab_margin"
+        android:text="@string/delete_contact"
+        android:textSize="@dimen/text_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
