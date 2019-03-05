@@ -118,7 +118,7 @@ public class PactogrammaActivity extends AppCompatActivity
         } else if (id == R.id.nav_information) {
 
         } else if (id == R.id.nav_about) {
-            FragmentManager rFragmentManager = getSupportFragmentManager();
+            /*FragmentManager rFragmentManager = getSupportFragmentManager();
             Fragment rFragment = rFragmentManager.findFragmentById(R.id.fragment_container);
             if (rFragment != null){
                 rFragment = new FragmentContact();
@@ -127,7 +127,7 @@ public class PactogrammaActivity extends AppCompatActivity
                         .replace(R.id.fragment_container, rFragment)
                         .addToBackStack(null)
                         .commit();
-            }
+            }*/
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
