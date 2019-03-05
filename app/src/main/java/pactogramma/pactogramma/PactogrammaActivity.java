@@ -15,8 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import pactogramma.pactogramma.DataBases.FragmentContact;
-
 public class PactogrammaActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
