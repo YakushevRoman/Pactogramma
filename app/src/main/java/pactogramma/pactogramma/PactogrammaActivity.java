@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import pactogramma.pactogramma.FragmentsData.FragmentAddPatient;
+
 public class PactogrammaActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -118,16 +120,6 @@ public class PactogrammaActivity extends AppCompatActivity
         } else if (id == R.id.nav_information) {
 
         } else if (id == R.id.nav_about) {
-            /*FragmentManager rFragmentManager = getSupportFragmentManager();
-            Fragment rFragment = rFragmentManager.findFragmentById(R.id.fragment_container);
-            if (rFragment != null){
-                rFragment = new FragmentContact();
-                rFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, rFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }*/
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

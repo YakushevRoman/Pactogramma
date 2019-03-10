@@ -22,10 +22,56 @@
             android:id="@+id/graph_css_ploda" />
 
         <Button
-            android:id="@+id/add_data_css_ploda"
-            android:text="Добавить данные"
+            android:id="@+id/button_pulse_baby"
+            android:text="@string/add_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </LinearLayout>
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="200dip"
+            android:id="@+id/temperature_graph_view" />
+
+        <Button
+            android:id="@+id/button_temperature"
+            android:text="@string/add_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_medications_received"
+            android:text="Medications Received"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_oxytocin"
+            android:text="Oxytocin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_pulse_and_pressure"
+            android:text="Pulse and pressure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_urine"
+            android:text="Urine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_uterine_contractions"
+            android:text="Uterine contractions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        </LinearLayout>
 </ScrollView>

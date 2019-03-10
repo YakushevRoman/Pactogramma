@@ -1,4 +1,4 @@
-package pactogramma.pactogramma;
+package pactogramma.pactogramma.FragmentsData;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,11 @@ import android.widget.EditText;
 
 import pactogramma.pactogramma.DataBases.DataBasePatients;
 import pactogramma.pactogramma.DataBases.DataBaseShema;
+import pactogramma.pactogramma.R;
 
 public class FragmentAddPatient extends Fragment {
+    private static final String TAG = "pactogramma";
+
 
     private EditText rEditTextName
             ,rEditTextWhatPregnancy
@@ -33,11 +37,6 @@ public class FragmentAddPatient extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         rDataBasePatients = new DataBasePatients(getContext());
         rSqLiteDatabase = rDataBasePatients.getWritableDatabase();
     }
@@ -72,7 +71,7 @@ public class FragmentAddPatient extends Fragment {
                 rContentValues.put(DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION, data_and_time_hospitalization);
                 rContentValues.put(DataBaseShema.Patient.Columns.PERIOD_DURATION, period_duration);
 
-                rSqLiteDatabase.insert(DataBaseShema.Patient.PATIENT, null,rContentValues);
+                rSqLiteDatabase.insert(DataBaseShema.Patient.TABLE_PATIENT, null,rContentValues);
 
                 Snackbar.make(rButtonAddNewPatient, "Данные добавлены : ", Snackbar.LENGTH_LONG)
                         .setAction("Action", null)
@@ -83,13 +82,33 @@ public class FragmentAddPatient extends Fragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        rDataBasePatients.close();
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: FragmentUrine");
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: FragmentUrine");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: FragmentUrine");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        rSqLiteDatabase.close();
+        Log.d(TAG, "onStop: FragmentUrine");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView:FragmentUrine");
     }
 }

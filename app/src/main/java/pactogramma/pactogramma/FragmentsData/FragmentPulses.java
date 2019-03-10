@@ -1,13 +1,11 @@
-package pactogramma.pactogramma.DataBases;
+package pactogramma.pactogramma.FragmentsData;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import pactogramma.pactogramma.DataBases.DataBasePatients;
+import pactogramma.pactogramma.DataBases.DataBaseShema;
 import pactogramma.pactogramma.FragmentGraph;
 import pactogramma.pactogramma.R;
 
@@ -27,7 +27,7 @@ public class FragmentPulses extends Fragment {
     private Bundle bundle;
     int id;
 
-    public static final String TAG = "fragmentGraph";
+    private static final String TAG = "pactogramma";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,12 +62,8 @@ public class FragmentPulses extends Fragment {
                 rContentValues.put(DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT, pulse);
                 rContentValues.put(DataBaseShema.BabyHeartbeat.Columns.TIME, time);
 
-                rSqLiteDatabase.insert(DataBaseShema.BabyHeartbeat.PULSES, null,rContentValues);
+                rSqLiteDatabase.insert(DataBaseShema.BabyHeartbeat.TABLE_PULSES, null,rContentValues);
                 Log.d(TAG, "onClick: добавлены данные "  + "id = " + 1  + " pulse "  + pulse + " time " + time);
-
-                Snackbar.make(v, "id = " + 1 + "Пульс :" +rEditTextPulses.getText().toString() + "\n Время : " + rEditTextTimePulse.getText().toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
                 getActivity().getSupportFragmentManager().popBackStack();
 
             }
@@ -77,15 +73,33 @@ public class FragmentPulses extends Fragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: 2");
-        rDataBasePatients.close();
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: FragmentUrine");
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: 2");
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: FragmentUrine");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: FragmentUrine");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        rSqLiteDatabase.close();
+        Log.d(TAG, "onStop: FragmentUrine");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView:FragmentUrine");
     }
 }

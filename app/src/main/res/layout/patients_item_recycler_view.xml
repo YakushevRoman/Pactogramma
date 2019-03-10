@@ -13,8 +13,7 @@
         android:background="@drawable/side_nav_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        card_view:cardCornerRadius="25dp"
-        style="@style/MyCardViewStyle">
+        card_view:cardCornerRadius="25dp">
 
     <TextView
         android:id="@+id/patient_item_text_view"

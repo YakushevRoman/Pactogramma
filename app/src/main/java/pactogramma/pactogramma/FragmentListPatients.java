@@ -32,7 +32,7 @@ public class FragmentListPatients extends Fragment {
     private DataBasePatients rDataBasePatients;
     private SQLiteDatabase rSqLiteDatabase;
     private Cursor rCursor;
-    public static final String TAG = "phone";
+    private static final String TAG = "pactogramma";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,7 @@ public class FragmentListPatients extends Fragment {
         rDataBasePatients = new DataBasePatients(getContext());
         rSqLiteDatabase = rDataBasePatients.getReadableDatabase();
         rCursor = rSqLiteDatabase.
-                query(DataBaseShema.Patient.PATIENT,
+                query(DataBaseShema.Patient.TABLE_PATIENT,
                         null,
                         null,
                         null,

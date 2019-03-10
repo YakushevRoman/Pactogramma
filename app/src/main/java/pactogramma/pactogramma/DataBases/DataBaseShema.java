@@ -1,9 +1,9 @@
 package pactogramma.pactogramma.DataBases;
-
+// описание базы данных
 public class DataBaseShema {
-    // таблица с пациентками
+    //•	Параметры для добавления нового пациента
     public static final class Patient{
-        public static final String PATIENT = "patient";
+        public static final String TABLE_PATIENT = "patient";
         public static final class Columns{
             public static final String ID = "id";
             public static final String FIRSTNAME_LASTNAME = "name";
@@ -16,7 +16,7 @@ public class DataBaseShema {
     }
     //•	Сердцебиение плода
     public static final class BabyHeartbeat{
-        public static final String PULSES = "babypulses";
+        public static final String TABLE_PULSES = "babypulses";
         public static final class Columns {
             public static final String ID = "id";
             public static final String HEARTBEAT = "heartbeat";
@@ -24,53 +24,62 @@ public class DataBaseShema {
         }
     }
 
+    // •Температура
+    public static final class Temperature{
+        public static final String TABLE_TEMPERATURE = "temperature";
+        public static final class Columns {
+            public static final String ID = "id";
+            public static final String TEMP = "tempe";
+            public static final String TIME = "time";
+        }
+    }
     // •	Окситоцин
     public static final class Oxytocin{
-        public static final String OXYTOCIN = "pulse";
+        public static final String TABLE_OXYTOCIN = "pulse";
         public static final class Columns{
             public static final String ID = "id";
-            public static final String oxytocin = "oxytocin";
+            public static final String OXYTOCIN = "oxytocin";
+            public static final String TIME = "time";
         }
     }
     //•	Полученные лекарства
     public static final class MedicationsReceived{
-
+        public static final String TABLE_MEDICATIONS_RECEIVED = "medications_received";
+        public static final class Columns{
+            public static final String ID = "id";
+            public static final String MEDICATIONS = "medications";
+            public static final String TIME = "time";
+        }
     }
-    // •	Пульс
-    public static final class Pulse {
-        public static final String PULSE = "pulse";
+    // •	Пульс и давление
+    public static final class PulseAndPressure {
+        public static final String TABLE_PULSE_AND_PRESSURE = "pulse_and_pressure";
         public static final class Columns{
             public static final String ID = "id";
             public static final String PULSE = "pulse";
-        }
-    }
-    // •Давление
-    public static final class Pressure {
-        public static final String PRESSURE = "pulse";
-        public static final class Columns{
-            public static final String ID = "id";
             public static final String PRESSURE = "pressure";
+            public static final String TIME = "time";
         }
-    }
-    // •	Температура
-    public static final class Temperature{
-        public static final String TEMPERATURE = "temperature";
-        public static final class Columns {
-            public static final String ID = "id";
-            public static final String TEMP = "temp";
-        }
-
-
     }
     // •	Моча
     public static final class Urine{
-        public static final String URINE = "urine";
+        public static final String TABLE_URINE = "urine";
         public static final class Columns{
             public static final String ID = "id";
             public static final String PROTEIN = "protein";
             public static final String ACETONE  = "acetone";
             public static final String VOLUME = "volume";
-        }
+            public static final String TIME = "time";
 
+        }
+    }
+    // ⦁	Маточные сокращения
+    public static final class UterineContractions{
+        public static final String TABLE_UTERINE_CONTRACTIONS = "uterine_contractions";
+        public static final class Columns{
+            public static final String ID = "id";
+            public static final String TIME = "time";
+            public static final String UTERINE_CONTRACTIONS = "uterine_contraction";
+        }
     }
 }

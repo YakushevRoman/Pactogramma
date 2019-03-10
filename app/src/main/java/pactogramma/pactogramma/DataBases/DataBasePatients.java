@@ -9,12 +9,11 @@ import android.util.Log;
 public class DataBasePatients extends SQLiteOpenHelper {
 
     private static final String DATA_BASE_NAME = "patients.db";
-    private static final int VERSION = 23;
-    public static final String TAG = "fragmentGraph";
+    private static final int VERSION = 28;
+    private static final String TAG = "pactogramma";
 
-    //private String sqlTablePulses = "CREATE TABLE " + DataBaseShema.BabyHeartbeat.PULSES;
-
-    private static final String sqlData = "INSERT INTO " + DataBaseShema.Patient.PATIENT + "("
+    private static final String sqlData = "INSERT INTO "
+            + DataBaseShema.Patient.TABLE_PATIENT + "("
             + DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME + ", "
             + DataBaseShema.Patient.Columns.WHAT_PREGNANCY + ", "
             + DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH + ", "
@@ -23,83 +22,89 @@ public class DataBasePatients extends SQLiteOpenHelper {
             + DataBaseShema.Patient.Columns.PERIOD_DURATION
             + ") VALUES ('Valentina Ivanova', 'Ранняя беременность', '1', '19.02.2019', '10 часов', '418956') ";
 
-    private static final String sqlData1 = "INSERT INTO " + DataBaseShema.Patient.PATIENT + "("
-            + DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME + ", "
-            + DataBaseShema.Patient.Columns.WHAT_PREGNANCY + ", "
-            + DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH + ", "
-            + DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_ + ", "
-            + DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION + ", "
-            + DataBaseShema.Patient.Columns.PERIOD_DURATION
-            + ") VALUES ('Valentina Durova', 'Ранняя беременность', '1', '19.02.2019', '10 часов', '418955') ";
-
-    private static final String sqlData2 = "INSERT INTO " + DataBaseShema.Patient.PATIENT + "("
-            + DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME + ", "
-            + DataBaseShema.Patient.Columns.WHAT_PREGNANCY + ", "
-            + DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH + ", "
-            + DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_ + ", "
-            + DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION + ", "
-            + DataBaseShema.Patient.Columns.PERIOD_DURATION
-            + ") VALUES ('Valentina Yakusheva', 'Ранняя беременность', '1', '19.02.2019', '10 часов', '418954') ";
-
-    /**
-     *
-     *
-     */
-    private String sql = "CREATE TABLE " + DataBaseShema.Patient.PATIENT + "("
-            + DataBaseShema.Patient.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME + " TEXT,"
-            + DataBaseShema.Patient.Columns.WHAT_PREGNANCY + " TEXT,"
-            + DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH + " TEXT,"
-            + DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_ + " TEXT,"
-            + DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION + " TEXT,"
-            + DataBaseShema.Patient.Columns.PERIOD_DURATION + " TEXT);";
-
-    private String sqlPulse = "CREATE TABLE " + DataBaseShema.BabyHeartbeat.PULSES + "("
-            + DataBaseShema.BabyHeartbeat.Columns.ID + " INTEGER,"
-            + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + " REAL,"
-            + DataBaseShema.BabyHeartbeat.Columns.TIME + " REAL);";
-
-    private static final String sqlPulsedata = "INSERT INTO " + DataBaseShema.BabyHeartbeat.PULSES + "("
-            + DataBaseShema.BabyHeartbeat.Columns.ID + ", "
-            + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + ", "
-            + DataBaseShema.BabyHeartbeat.Columns.TIME
-            + ") VALUES (1, 110, 1) ";
-    private static final String sqlPulsedata1 = "INSERT INTO " + DataBaseShema.BabyHeartbeat.PULSES + "("
-            + DataBaseShema.BabyHeartbeat.Columns.ID + ", "
-            + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + ", "
-            + DataBaseShema.BabyHeartbeat.Columns.TIME
-            + ") VALUES (1,170, 5) ";
-
     public DataBasePatients(@Nullable Context context) {
         super(context, DATA_BASE_NAME, null, VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        /* таблица с пульсом*/
-        db.execSQL(sqlPulse);
-        db.execSQL(sqlPulsedata);
-        db.execSQL(sqlPulsedata1);
-        //db.execSQL(sqlPulsedata);
-        Log.d(TAG, "onCreate: pulses");
-
+        // Таблица ⦁	 Пациенты
+        String sql = "CREATE TABLE "
+                + DataBaseShema.Patient.TABLE_PATIENT + "("
+                + DataBaseShema.Patient.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + DataBaseShema.Patient.Columns.FIRSTNAME_LASTNAME + " TEXT,"
+                + DataBaseShema.Patient.Columns.WHAT_PREGNANCY + " TEXT,"
+                + DataBaseShema.Patient.Columns.WHICH_ACCOUNT_BIRTH + " TEXT,"
+                + DataBaseShema.Patient.Columns.NUMBER_MEDICAL_HISTORY_ + " TEXT,"
+                + DataBaseShema.Patient.Columns.DATA_AND_TIME_HOSPITALIZATION + " TEXT,"
+                + DataBaseShema.Patient.Columns.PERIOD_DURATION + " TEXT);";
         db.execSQL(sql);
-        // добавляем начальные данные
-        /*
-        таблица с пациентками
-         */
+        // Таблица ⦁	 Сердцебиение плода
+        String sqlPulse = "CREATE TABLE " + DataBaseShema.BabyHeartbeat.TABLE_PULSES + "("
+                + DataBaseShema.BabyHeartbeat.Columns.ID + " INTEGER,"
+                + DataBaseShema.BabyHeartbeat.Columns.HEARTBEAT + " REAL,"
+                + DataBaseShema.BabyHeartbeat.Columns.TIME + " REAL);";
+        db.execSQL(sqlPulse);
+        // Таблица • Температура
+        String sqlTemperature = "CREATE TABLE " + DataBaseShema.Temperature.TABLE_TEMPERATURE + "("
+                + DataBaseShema.Temperature.Columns.ID + " INTEGER,"
+                + DataBaseShema.Temperature.Columns.TEMP + " REAL,"
+                + DataBaseShema.Temperature.Columns.TIME + " REAL);";
+        db.execSQL(sqlTemperature);
+        // Таблица • Окситоцин
+        String sqlOxytocin = "CREATE TABLE "
+                + DataBaseShema.Oxytocin.TABLE_OXYTOCIN + "("
+                + DataBaseShema.Oxytocin.Columns.ID + " INTEGER,"
+                + DataBaseShema.Oxytocin.Columns.OXYTOCIN + " REAL,"
+                + DataBaseShema.Oxytocin.Columns.TIME + " REAL);";
+        db.execSQL(sqlOxytocin);
+        // Таблица • Urine
+        String sqlUrine = "CREATE TABLE "
+                + DataBaseShema.Urine.TABLE_URINE + "("
+                + DataBaseShema.Urine.Columns.ID + " INTEGER,"
+                + DataBaseShema.Urine.Columns.PROTEIN + " REAL,"
+                + DataBaseShema.Urine.Columns.ACETONE + " REAL,"
+                + DataBaseShema.Urine.Columns.VOLUME + " REAL,"
+                + DataBaseShema.Urine.Columns.TIME + " REAL);";
+        db.execSQL(sqlUrine);
+        // Таблица • Пульс и давление
+        String sqlPulseAndPressure = "CREATE TABLE "
+                + DataBaseShema.PulseAndPressure.TABLE_PULSE_AND_PRESSURE + "("
+                + DataBaseShema.PulseAndPressure.Columns.ID + " INTEGER,"
+                + DataBaseShema.PulseAndPressure.Columns.PRESSURE + " REAL,"
+                + DataBaseShema.PulseAndPressure.Columns.PULSE + " REAL,"
+                + DataBaseShema.PulseAndPressure.Columns.TIME + " REAL);";
+        db.execSQL(sqlPulseAndPressure);
+        // Таблица • Пульс и давление
+        String sqlMedicationsReceived = "CREATE TABLE "
+                + DataBaseShema.MedicationsReceived.TABLE_MEDICATIONS_RECEIVED + "("
+                + DataBaseShema.MedicationsReceived.Columns.ID + " INTEGER,"
+                + DataBaseShema.MedicationsReceived.Columns.MEDICATIONS + " TEXT,"
+                + DataBaseShema.MedicationsReceived.Columns.TIME + " REAL);";
+        db.execSQL(sqlMedicationsReceived);
+        // Таблица • Маточные сокращения
+        String sqlUterineContractions = "CREATE TABLE "
+                + DataBaseShema.UterineContractions.TABLE_UTERINE_CONTRACTIONS + "("
+                + DataBaseShema.UterineContractions.Columns.ID + " INTEGER,"
+                + DataBaseShema.UterineContractions.Columns.UTERINE_CONTRACTIONS + " REAL,"
+                + DataBaseShema.UterineContractions.Columns.TIME+ " REAL);";
+        db.execSQL(sqlUterineContractions);
+        //добавляем 1 пациента
         db.execSQL(sqlData);
-        db.execSQL(sqlData1);
-        db.execSQL(sqlData2);
-        Log.d(TAG, "onCreate: start table" );
-
-
+        Log.d(TAG, "onCreate: start tables" );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.Patient.PATIENT);
-        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.BabyHeartbeat.PULSES);
+        // в счулае если меняется база данных удаляем все таблицы из БД
+        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.Patient.TABLE_PATIENT);
+        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.BabyHeartbeat.TABLE_PULSES);
+        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.Temperature.TABLE_TEMPERATURE);
+        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.Oxytocin.TABLE_OXYTOCIN);
+        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.Urine.TABLE_URINE);
+        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.UterineContractions.TABLE_UTERINE_CONTRACTIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.PulseAndPressure.TABLE_PULSE_AND_PRESSURE);
+        db.execSQL("DROP TABLE IF EXISTS " + DataBaseShema.MedicationsReceived.TABLE_MEDICATIONS_RECEIVED);
         onCreate(db);
     }
 }
